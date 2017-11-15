@@ -4,7 +4,7 @@
  * @param  {Object|String} res 回调响应信息
  */
 window.WebViewBridgeCallback = (method, res) => {
-    if (typeof res === 'String') {
+    if (typeof res === 'string') {
         res = JSON.parse(res);
     }
     window.WebViewBridge.receiveResponse(method, res);
