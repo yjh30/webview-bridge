@@ -3,7 +3,7 @@ import './callbackHandle';
 
 export default urlScheme => {
     const bridge = new Bridge(urlScheme);
-    window.WebViewBridge = bridge;
+    window.WebViewBridgeInstance = bridge;
 
     return bridge;
-}
+};

@@ -7,5 +7,5 @@ window.WebViewBridgeCallback = (method, res) => {
     if (typeof res === 'string') {
         res = JSON.parse(res);
     }
-    window.WebViewBridge.receiveResponse(method, res);
+    window.WebViewBridgeInstance.receiveResponse(method, res);
 };
