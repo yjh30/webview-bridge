@@ -1,16 +1,15 @@
 # Native/Webview bridge for Hybrid
 
-
 ## 安装
 
 ``` bash
-npm i --save hybride-webview-bridge
+npm i --save webview-bridge
 ```
 
 
 ## 特点
 * 支持自定义app URL scheme
-* 支持多种处理方式
+* 支持多种处理方式（全部涵盖）
 * 支持Promise处理回调
 
 
@@ -20,7 +19,8 @@ npm i --save hybride-webview-bridge
 import Bridge from 'hybride-webview-bridge';
 
 // 如果客户端没有使用URL scheme，则不需要传递参数
-const WebViewBridge = new Bridge('qq://');
+const WebViewBridge = new Bridge('mqq://');
+WebViewBridge.call(); // 将会唤起手机版qq软件
 
 /**
  * 调用原生方法
@@ -68,7 +68,16 @@ window.WebViewBridge.getLocation(JSON.stringify({
 }));
 ```
 
-3、如果不支持postMessage发送消息，也没有注入全局js对象，最一种就是使用URL scheme了，客户端url拦截处理，这种方式需要使用setTimeout延时处理，避免后者覆盖前者（同时调用多次）
+3、如果不支持postMessage发送消息，也没有注入全局js对象，最一种就是使用URL scheme了，客户端url拦截处理，这种方式需要使用setTimeout延时处理，避免后者覆盖前者（同时调用多次）协议地址类似如下：
+``` js
+const msg = decodeURIComponent(JSON.stringify({
+    method: 'getLocation',
+    params: {
+        CacheMode: 0,
+    },
+}));
+const URLScheme = `qq://${msg}`;
+```
 
 
 ## callback 回调
@@ -87,4 +96,27 @@ window.WebViewBridgeCallback = (method, res) => {
     window.WebViewBridge.receiveResponse(method, res);
 };
 ```
+
+
+## 知识点扩充
+
+##### android
+> 安卓通过addJavaScriptInterface方法注入Java对象到js上下文对象window中，由于4.2以下版本中，该方法有漏洞，
+解决该漏洞的方法有两种，第一种通过URL scheme解决，第二种通过如下方案解决：
+```
+webview.loadUrl("javascript:if(window.WebViewBridge === undefined) { window.WebViewBridge = { call: function(jsonString) { window.prompt(jsonString); }}};");
+```
+在webview中通过loadUrl定义一个window.WebViewBridge及call通用方法，方法体内执行了window.prompt，然后在WebChromeClient类中处理onJsPrompt，设置拦截规则，onJsPrompt返回true，将不处理dialog；
+
+推荐文章：[安卓Webview](http://mp.weixin.qq.com/s/4XRB7nqTVftL5K2jAMGVVg)
+
+
+##### ios
+> ios8系统及以上版本可以通过注入 window.webkit.messageHandlers.XXX.postMessage方法，我们可以使用这个方法直接向 Native 层传值，非常方便。
+推荐文章：[postMessage技术](https://lvwenhan.com/ios/461.html) [ios官方webkit网站](https://developer.apple.com/documentation/webkit)
+
+> ios7开始，还可以使用[javascriptcore](https://developer.apple.com/documentation/javascriptcore)注入Java对象到js上下文对象window中
+> 最后一种 ios也支持URL scheme
+
+推荐文章：[WKWebview相关](https://www.cnblogs.com/cynthia-wuqian/p/6268359.html)
 
