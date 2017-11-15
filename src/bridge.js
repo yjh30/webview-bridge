@@ -8,11 +8,11 @@ function compatibility(urlScheme, msg) {
         iframe.setAttribute('style', 'display:none;');
         window.document.documentElement.appendChild(iframe);
     }
-    iframe.src = `${urlScheme}${msg}`;
+    iframe.src = `${urlScheme}${encodeURIComponent(msg)}`;
 }
 
 export default class {
-    construtor(urlScheme) {
+    constructor(urlScheme) {
         this.urlScheme = urlScheme;
         this.callQueue = [];
     }
