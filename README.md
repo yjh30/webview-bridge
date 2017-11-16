@@ -93,7 +93,7 @@ window.WebViewBridgeCallback = (method, res) => {
     if (typeof res === 'String') {
         res = JSON.parse(res);
     }
-    window.WebViewBridge.receiveResponse(method, res);
+    window.WebViewBridgeInstance.receiveResponse(method, res);
 };
 ```
 
