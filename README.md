@@ -16,7 +16,7 @@ npm i --save webview-bridge
 ## 使用
 
 ``` js
-import Bridge from 'hybride-webview-bridge';
+import Bridge from 'webview-bridge';
 
 // 如果客户端没有使用URL scheme，则不需要传递参数
 const WebViewBridge = new Bridge('mqq://');
@@ -76,7 +76,7 @@ const msg = decodeURIComponent(JSON.stringify({
         CacheMode: 0,
     },
 }));
-const URLScheme = `qq://${msg}`;
+const URLScheme = `mqq://${msg}`;
 ```
 
 
