@@ -1,0 +1,28 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+input {
+    display: block;
+    width: 80%;
+    height: 44px;
+    border: 1px solid #ddd;
+    margin-top: 50px;
+    margin-left: 10%;
+    outline: none;
+    text-indent: 10px;
+}
+
+.button {
+    margin-top: 50px;
+    margin-left: 10%;
+    width: 80%;
+    height: 44px;
+    border: 1px solid #ddd;
+    font-size: 18px;
+    text-align: center;
+    line-height: 44px;
+    border-radius: 5px;
+    background-color: green;
+    color: #fff;
+}
