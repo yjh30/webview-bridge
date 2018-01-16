@@ -1,11 +1,10 @@
 import Bridge from './bridge';
+import instances from  './instances';
 import './callbackHandle';
 
-export default class {
+export default class extends Bridge {
     constructor(urlScheme) {
-        const bridge = new Bridge(urlScheme);
-        window.WebViewBridgeInstance = bridge;
-
-        return bridge;
+        super(urlScheme);
+        instances.push(this);
     }
 }

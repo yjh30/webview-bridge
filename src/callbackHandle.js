@@ -1,3 +1,5 @@
+import instances from  './instances';
+
 /**
  * 调用原生客户端方法后执行的回调函数
  * @param  {String} method 方法名
@@ -5,7 +7,15 @@
  */
 window.WebViewBridgeCallback = (method, res) => {
     if (typeof res === 'string') {
-        res = JSON.parse(res);
+        try {
+            res = JSON.parse(res);
+        } catch(e) {
+            // ...
+        }
     }
-    window.WebViewBridgeInstance.receiveResponse(method, res);
+    instances.forEach(instance => {
+        if (method && instance.callQueue[method]) {
+            instance.callQueue[method](res);
+        }
+    });
 };

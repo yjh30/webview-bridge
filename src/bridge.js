@@ -47,8 +47,4 @@ export default class {
             };
         });
     }
-
-    receiveResponse(method, res) {
-        this.callQueue[method](res);
-    }
 }
