@@ -1,6 +1,7 @@
 import utils from './utils';
 
 let iframe;
+const EventEmitter = require('events');
 
 function compatibility(urlScheme, msg) {
     if (!iframe) {
@@ -11,8 +12,9 @@ function compatibility(urlScheme, msg) {
     iframe.src = `${urlScheme}${encodeURIComponent(msg)}`;
 }
 
-export default class {
+export default class extends EventEmitter {
     constructor(urlScheme) {
+        super();
         this.urlScheme = urlScheme;
         this.callQueue = [];
     }
